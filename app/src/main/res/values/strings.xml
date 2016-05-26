@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Digital Wildcard</string>
+    <string name="action_add">Add A New Wildcard</string>
+    <string name="action_settings">Settings</string>
+</resources>
