@@ -33,7 +33,7 @@ public class ScannerActivity extends AppCompatActivity implements ZBarScannerVie
 
     @Override
     public void handleResult(Result result) {
-        setResult(Activity.RESULT_OK, new Intent().putExtra("barcode", result.getContents()));
+        setResult(RESULT_OK, new Intent().putExtra("barcode", result.getContents()));
         finish();
     }
 }

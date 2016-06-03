@@ -1,20 +1,27 @@
 package com.github.itsmichaelwang.digitalwildcard;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
+
+import com.desmond.squarecamera.ImageUtility;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Used for logging success or failure messages
     private static final String TAG = "DWc::Main";
     private static final int REQUEST_GET_BARCODE = 0;
+    private static final int REQUEST_SELFIE = 1;
+
     private DigitalWildCard card;
 
     @Override
@@ -27,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         card = new DigitalWildCard();
-
     }
 
     @Override
@@ -60,12 +66,30 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_GET_BARCODE && resultCode == Activity.RESULT_OK) {
+        if (resultCode != RESULT_OK) return;
+
+        if (requestCode == REQUEST_GET_BARCODE) {
             String barcode = data.getStringExtra("barcode");
             card.setBarcode(barcode);
             Log.d(TAG, "Barcode received!");
+            Log.d(TAG, barcode);
+
+            Intent intent = new Intent(this, SelfieActivity.class);
+            startActivityForResult(intent, REQUEST_SELFIE);
+        }
+
+        if (requestCode == REQUEST_SELFIE) {
+            Uri photoUri = Uri.parse(data.getStringExtra("selfieUri"));
+            card.setUri(photoUri);
+            Log.d(TAG, "Selfie URI received!");
+            Log.d(TAG, photoUri.toString());
+
 
 
         }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
+
+
